@@ -16,7 +16,7 @@ svn = merger.Merger()
 @app.route("/")
 def index():
     """
-    Парсим результаты с dtb.py
+    Парсим результаты с dtb.py 11
     test = dtb.read_urls_test()
     Получаем список, вида:
     l = [['SmartStation_x86 Windows', '192.168.6.104', '8081', '/tvz-win-trunk', '9581', True, 1],[],...]
