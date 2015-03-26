@@ -1,53 +1,26 @@
-.b-page
+div.autotesting
 {
-    width:100%;
-    margin:0;
-    background-color:#f7f7f7;
-    background:url("../img/bg.png");
-    font-family:Oswald,Tahoma;
-    font-size:12px;
+font-size: 14px;
+margin-left: 5px;
+float: left;
 }
 
-.b-page__head-line {
-    background-color:#7e7e7e;
-    height:5px;
-    width:100%;
-}
-
-.b-page__line {
-    width:80%;
-    margin:0 auto;
-    margin-top:20px;
-}
-
-.b-menu
+div.statuses
 {
-    margin:0;
-    padding:0;
-    list-style:none;
-    width:100%;
-    display:table;
-    table-layout: fixed;
-
+float: left;
+margin-left: 5px;
 }
-.b-link_menu
-{
-    text-align:center;
-    color:#bfbfbf;
-    cursor:pointer;
-    font-size:14px;
-    height:38px;
-    background-color:#f3f3f3;
-    line-height:38px;
-    border: 1px solid #e7e7e7;
-    display:table-cell;
-    text-decoration: none;
-}
-.b-table__cam
-{
-    border:1px solid;
-    background-color:red;
-    width:30px;
-    height:30px;
 
+div.access
+{
+margin-top: 10px;
+}
+
+div.merge
+{
+margin-top: 10px;
+}
+div.merge div
+{
+margin-top:-10px;
 }
