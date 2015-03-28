@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, jsonify
 import db
 import subprocess
 import sys
@@ -12,6 +12,7 @@ app = Flask(__name__, static_folder='', static_url_path='')
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 dtb = db.Database('server')
 svn = merger.Merger()
+
 
 @app.route("/")
 def index():
@@ -50,12 +51,15 @@ def index():
     cam = dtb.read_cam()
     res = dtb.read_res()
     buttons = dtb.read_button()
-    return render_template('template.html', test=test, build=build, doc=doc, merge=merge, cam=cam, res=res, buttons=buttons)
+    return render_template('template.html', test=test, build=build, doc=doc, merge=merge, cam=cam, res=res,
+                           buttons=buttons)
+
 
 @app.route("/merge", methods=['GET'])
 def index_merge():
     buttons = dtb.read_button()
     return render_template('merge_template.html', buttons=buttons)
+
 
 @app.route('/<action>', methods=['POST'])
 def merge(action):
@@ -66,7 +70,6 @@ def merge(action):
             return render_template('merge_result.html', out=out)
     else:
         return redirect('/')
-
 
 if __name__ == '__main__':
     app.run(debug=True)

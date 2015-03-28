@@ -3,28 +3,13 @@
 <head>
     <title>Страница автотестирования</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css" type="text/css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="templates/styles/style.css" type="text/css">
     <link href="templates/styles/bootstrap.min.css" rel="stylesheet" media="screen">
-    <style type="text/css">
-        .container {
-        max-width: 500px;
-        padding-top: 100px;
-        }
-    </style>
-    <script type="text/javascript">
-        window.onload = setupRefresh;
-
-        function setupRefresh() {
-            setTimeout("refreshPage();", 60000); // milliseconds
-        }
-        function refreshPage() {
-            window.location = location.href;
-        }
-    </script>
 </head>
 <body>
 <div align="center"><h2>Сервер тестирования ПО</h2></div>
-<div style="font-size: 14px; margin-left: 5px; float: left;">
+<div class="autotesting">
     <table border="1">
     <caption><b>Автотестирование</b></caption>
         <tr>
@@ -81,53 +66,59 @@
         {% endfor %}
     </table>
 </div>
-<div style="float: left; margin-left: 5px;">
-  <table border="1">
-   <caption><b>Статус камер</b></caption>
-   <tr>
-   {% for data in cam %}
-        {%- if loop.index % 19==0 %}
-            {% if data[1]|int %}
-            <td bgcolor="green" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+<div class="statuses">
+    <div class="statuscam">
+        <table border="1">
+        <caption><b>Статус камер</b></caption>
+        <tr>
+        {% for data in cam %}
+            {%- if loop.index % 19==0 %}
+                {% if data[1]|int %}
+                <td bgcolor="green" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                {% else %}
+                <td bgcolor="red" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                {% endif %}
+                </tr>
+                <tr>
             {% else %}
-            <td bgcolor="red" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                {% if data[1]|int %}
+                <td bgcolor="green" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                {% else %}
+                <td bgcolor="red" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                {% endif %}
             {% endif %}
-            </tr>
-            <tr>
-        {% else %}
-            {% if data[1]|int %}
-            <td bgcolor="green" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
-            {% else %}
-            <td bgcolor="red" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
-            {% endif %}
-        {% endif %}
-   {% endfor %}
-  </table>
-  <table border="1" style="margin-top:20px;">
-      <caption><b>Доступность</b>&nbsp;<b>ресурсов</b></caption>
-      <tr>
-            <th>Ресурс</th>
-            <th>Статус</th>
-      </tr>
-      {% for data in res %}
-      <tr>
-          <td>{{ data[0] }}</td>
-          {% if data[2]|int %}
-          <td bgcolor="green" title="{{ ''.join([data[1]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
-          {% else %}
-          <td bgcolor="red" title="{{ ''.join([data[1]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
-          {% endif %}
-      </tr>
-      {% endfor %}
-  </table>
-<p style="margin-top:20px;"><b>Кнопки мержа</b></p>
-<div style="margin-top:-10px;">
-{% for button in buttons %}
-<form action="{{ ''.join([button[0]]) }}" target="_blank" method="post">
-    <input type="submit" value="{{ ''.join([button[0]]) }}" title="{{ ''.join([button[1]]) }}" style="width:150px;"/>
-</form>
-{% endfor %}
-</div>
+        {% endfor %}
+        </table>
+    </div>
+    <div class="access">
+        <table border="1">
+          <caption><b>Доступность</b>&nbsp;<b>ресурсов</b></caption>
+          <tr>
+                <th>Ресурс</th>
+                <th>Статус</th>
+          </tr>
+          {% for data in res %}
+          <tr>
+              <td>{{ data[0] }}</td>
+              {% if data[2]|int %}
+              <td bgcolor="green" title="{{ ''.join([data[1]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+              {% else %}
+              <td bgcolor="red" title="{{ ''.join([data[1]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+              {% endif %}
+          </tr>
+          {% endfor %}
+        </table>
+    </div>
+    <div class="merge">
+        <p><b>Кнопки мержа</b></p>
+        <div>
+        {% for button in buttons %}
+        <form action="{{ ''.join([button[0]]) }}" target="_blank" method="post">
+            <input type="submit" value="{{ ''.join([button[0]]) }}" title="{{ ''.join([button[1]]) }}" style="width:150px;"/>
+        </form>
+        {% endfor %}
+        </div>
+    </div>
 </div>
 </body>
 </html>
