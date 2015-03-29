@@ -1,3 +1,4 @@
+
 div.autotesting
 {
 font-size: 14px;
@@ -13,7 +14,7 @@ margin-left: 5px;
 
 div.access
 {
-margin-top: 10px;
+margin-top: 70px;
 }
 
 div.merge
@@ -23,4 +24,9 @@ margin-top: 10px;
 div.merge div
 {
 margin-top:-10px;
+}
+
+input, label {
+    float:left;
+    margin:5px;
 }

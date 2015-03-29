@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Страница автотестирования</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="templates/js/script.js"></script>
+    <link rel="stylesheet" href="templates/styles/style.css" type="text/css">
+    <link href="templates/styles/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div align="center"><h2>Сервер тестирования ПО</h2></div>
+        <div class="col-md-6">
+            <div class="autotesting">
+                <table class="table table-condensed table-bordered">
+                    <caption><strong>Автотестирование</strong></caption>
+                    <tr>
+                        <th>Имя</th>
+                        <th>Тестируемое ПО</th>
+                        <th>Ревизия</th>
+                        <th>Статус сервера</th>
+                        <th>IP адрес</th>
+                    </tr>
+                    {% for data in test %}
+                    <tr>
+                        <td>{{ data[0] }}</td>
+                        <td><a href="{{ ''.join(['http://', data[1]+':'+data[2]+data[3]]) }}">{{ data[3][1:] }}</a></td>
+                        <td>{{ data[4] }}</td>
+                        <td>{% if data[5]|int %} <p style="color: green; margin: 0px;">Online</p> {% else %} <p
+                                style="color: red;">Offline</p> {% endif %}
+                        </td>
+                        <td>{{ data[1] }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="5" style="text-align: center;"><strong>Автосборки</strong></td>
+                    </tr>
+                    {% for data in build %}
+                    <tr>
+                        <td>{{ data[0] }}</td>
+                        <td><a href="{{ ''.join(['http://', data[1]+':'+data[2]+data[3]]) }}">{{ data[3][1:] }}</a></td>
+                        <td>{{ data[4] }}</td>
+                        <td>{% if data[5]|int %} <p style="color: green; margin: 0px;">Online</p> {% else %} <p
+                                style="color: red;">Offline</p> {% endif %}
+                        </td>
+                        <td>{{ data[1] }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="5" style="text-align: center;"><strong>Документация</strong></td>
+                    </tr>
+                    {% for data in doc %}
+                    <tr>
+                        <td>{{ data[0] }}</td>
+                        <td><a href="{{ ''.join(['http://', data[1]+':'+data[2]+data[3]]) }}">{{ data[3][1:] }}</a></td>
+                        <td>{{ data[4] }}</td>
+                        <td>{% if data[5]|int %} <p style="color: green; margin: 0px;">Online</p> {% else %} <p
+                                style="color: red;">Offline</p> {% endif %}
+                        </td>
+                        <td>{{ data[1] }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="5" style="text-align: center;"><strong>Автомерж</strong></td>
+                    </tr>
+                    {% for data in merge %}
+                    <tr>
+                        <td>{{ data[0] }}</td>
+                        <td><a href="{{ ''.join(['http://', data[1]+':'+data[2]+data[3]]) }}">{{ data[3][1:] }}</a></td>
+                        <td>{{ data[4] }}</td>
+                        <td>{% if data[5]|int %} <p style="color: green; margin: 0px;">Online</p> {% else %} <p
+                                style="color: red;">Offline</p> {% endif %}
+                        </td>
+                        <td>{{ data[1] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="statuses">
+                <div class="statuscam">
+                    <table class="table table-condensed table-bordered">
+                        <caption><strong>Статус камер</strong></caption>
+                        <tr>
+                            {% for data in cam %}
+                            {%- if loop.index % 19==0 %}
+                            {% if data[1]|int %}
+                            <td bgcolor="green" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                            {% else %}
+                            <td bgcolor="red" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                            {% endif %}
+                        </tr>
+                        <tr>
+                            {% else %}
+                            {% if data[1]|int %}
+                            <td bgcolor="green" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                            {% else %}
+                            <td bgcolor="red" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                    </table>
+                </div>
+                <div class="merge">
+                    <p class="text-center"><strong>Кнопки мержа</strong></p>
+
+                    <div>
+                        {% for button in buttons %}
+                        <form role="form" action="{{ ''.join([button[0]]) }}" target="_blank" method="post">
+                            <div class="form-group">
+                                <input class="btn btn-default" type="submit" value="{{ ''.join([button[0]]) }}"
+                                       title="{{ ''.join([button[1]]) }}"
+                                       style="width:150px;"/>
+                            </div>
+                        </form>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="access">
+                    <table class="table table-condensed table-bordered">
+                        <caption><strong>Доступность</strong>&nbsp;<strong>ресурсов</strong></caption>
+                        <tr>
+                            <th>Ресурс</th>
+                            <th>Статус</th>
+                        </tr>
+                        {% for data in res %}
+                        <tr>
+                            <td>{{ data[0] }}</td>
+                            {% if data[2]|int %}
+                            <td bgcolor="green" title="{{ ''.join([data[1]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                            {% else %}
+                            <td bgcolor="red" title="{{ ''.join([data[1]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <button id="js">Get JSON data</button>
+        <div id="divjs"></div>
+    </div>
+</div>
+</body>
+</html>

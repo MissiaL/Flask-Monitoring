@@ -6,7 +6,7 @@ import merger
 from os import system
 
 
-subprocess.Popen([sys.executable, "db.py"])
+#subprocess.Popen([sys.executable, "db.py"])
 system("title " + "testing.nordavind.ru")
 app = Flask(__name__, static_folder='', static_url_path='')
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
@@ -51,7 +51,7 @@ def index():
     cam = dtb.read_cam()
     res = dtb.read_res()
     buttons = dtb.read_button()
-    return render_template('template.html', test=test, build=build, doc=doc, merge=merge, cam=cam, res=res,
+    return render_template('index.html', test=test, build=build, doc=doc, merge=merge, cam=cam, res=res,
                            buttons=buttons)
 
 
@@ -70,6 +70,13 @@ def merge(action):
             return render_template('merge_result.html', out=out)
     else:
         return redirect('/')
+
+@app.route('/js')
+def getjs():
+    res = dtb.read_res()
+    print(res)
+    return (jsonify(result=res))
+    #return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)
