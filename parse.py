@@ -6,6 +6,9 @@ from lxml import etree
 from multiprocessing.dummy import Pool as ThreadPool
 import configparser
 import socket
+import requests
+from lxml import html
+import lxml
 
 
 class Parser:
@@ -82,10 +85,10 @@ class Parser:
         name = urlparse(url[1]).path
         server_status = self.pinger(ip)
         try:
-            page = request.urlopen(url[1], timeout=10).read()
-            html = etree.HTML(page)
-            rev = max(html.xpath('//td[@class="context-menu-revision"]/@rev'))
-        except (URLError, socket.timeout):
+            page = requests.get(url[1], timeout=2)
+            tree = html.fromstring(page.text)
+            rev = max(tree.xpath('//td[@class="context-menu-revision"]/@rev'))
+        except (requests.ConnectionError, lxml.etree.XMLSyntaxError):
             rev = 'Uknown'
         except ValueError:
             rev = 'Uknown'
@@ -94,42 +97,42 @@ class Parser:
         return [url_name, ip, port, name, rev, server_status]
 
     def testingTest(self):
-        pool = ThreadPool(10)
+        pool = ThreadPool(3)
         results = pool.map(self.revparser, self.test)
         pool.close()
         pool.join()
         return results
 
     def testingBuild(self):
-        pool = ThreadPool(10)
+        pool = ThreadPool(3)
         results = pool.map(self.revparser, self.build)
         pool.close()
         pool.join()
         return results
 
     def testingDoc(self):
-        pool = ThreadPool(10)
+        pool = ThreadPool(3)
         results = pool.map(self.revparser, self.doc)
         pool.close()
         pool.join()
         return results
 
     def testingMerge(self):
-        pool = ThreadPool(10)
+        pool = ThreadPool(3)
         results = pool.map(self.revparser, self.merge)
         pool.close()
         pool.join()
         return results
 
     def camerasCam(self):
-        pool = ThreadPool(10)
+        pool = ThreadPool(3)
         results = pool.map(self.pinger_cam, self.cam)
         pool.close()
         pool.join()
         return results
 
     def resourcesRes(self):
-        pool = ThreadPool(10)
+        pool = ThreadPool(3)
         results = pool.map(self.pinger_cam, self.res)
         pool.close()
         pool.join()
