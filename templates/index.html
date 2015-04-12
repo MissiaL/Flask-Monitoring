@@ -25,13 +25,13 @@
                     </tr>
                     {% for data in test %}
                     <tr>
-                        <td>{{ data[0] }}</td>
-                        <td><a href="{{ ''.join(['http://', data[1]+':'+data[2]+data[3]]) }}">{{ data[3][1:] }}</a></td>
-                        <td>{{ data[4] }}</td>
-                        <td>{% if data[5]|int %} <p style="color: green; margin: 0px;">Online</p> {% else %} <p
+                        <td class="{{ 'testname'+''.join([data[6]|string]) }}">{{ data[0] }}</td>
+                        <td class="{{ 'testurl'+''.join([data[6]|string]) }}" ><a href="{{ ''.join(['http://', data[1]+':'+data[2]+'/'+data[3]]) }}">{{ data[3] }}</a></td>
+                        <td class="{{ 'testrev'+''.join([data[6]|string]) }}">{{ data[4] }}</td>
+                        <td class="{{ 'teststatus'+''.join([data[6]|string]) }}">{% if data[5]|int %} <p style="color: green;">Online</p> {% else %} <p
                                 style="color: red;">Offline</p> {% endif %}
                         </td>
-                        <td>{{ data[1] }}</td>
+                        <td class="{{ 'testip'+''.join([data[6]|string]) }}">{{ data[1] }}</td>
                     </tr>
                     {% endfor %}
                     <tr>
@@ -39,13 +39,13 @@
                     </tr>
                     {% for data in build %}
                     <tr>
-                        <td>{{ data[0] }}</td>
-                        <td><a href="{{ ''.join(['http://', data[1]+':'+data[2]+data[3]]) }}">{{ data[3][1:] }}</a></td>
-                        <td>{{ data[4] }}</td>
-                        <td>{% if data[5]|int %} <p style="color: green; margin: 0px;">Online</p> {% else %} <p
+                        <td class="{{ 'buildname'+''.join([data[6]|string]) }}">{{ data[0] }}</td>
+                        <td class="{{ 'buildurl'+''.join([data[6]|string]) }}" ><a href="{{ ''.join(['http://', data[1]+':'+data[2]+'/'+data[3]]) }}">{{ data[3] }}</a></td>
+                        <td class="{{ 'buildrev'+''.join([data[6]|string]) }}">{{ data[4] }}</td>
+                        <td class="{{ 'buildstatus'+''.join([data[6]|string]) }}">{% if data[5]|int %} <p style="color: green;">Online</p> {% else %} <p
                                 style="color: red;">Offline</p> {% endif %}
                         </td>
-                        <td>{{ data[1] }}</td>
+                        <td class="{{ 'buildip'+''.join([data[6]|string]) }}">{{ data[1] }}</td>
                     </tr>
                     {% endfor %}
                     <tr>
@@ -53,13 +53,13 @@
                     </tr>
                     {% for data in doc %}
                     <tr>
-                        <td>{{ data[0] }}</td>
-                        <td><a href="{{ ''.join(['http://', data[1]+':'+data[2]+data[3]]) }}">{{ data[3][1:] }}</a></td>
-                        <td>{{ data[4] }}</td>
-                        <td>{% if data[5]|int %} <p style="color: green; margin: 0px;">Online</p> {% else %} <p
+                        <td class="{{ 'docname'+''.join([data[6]|string]) }}">{{ data[0] }}</td>
+                        <td class="{{ 'docurl'+''.join([data[6]|string]) }}" ><a href="{{ ''.join(['http://', data[1]+':'+data[2]+'/'+data[3]]) }}">{{ data[3] }}</a></td>
+                        <td class="{{ 'docrev'+''.join([data[6]|string]) }}">{{ data[4] }}</td>
+                        <td class="{{ 'docstatus'+''.join([data[6]|string]) }}">{% if data[5]|int %} <p style="color: green;">Online</p> {% else %} <p
                                 style="color: red;">Offline</p> {% endif %}
                         </td>
-                        <td>{{ data[1] }}</td>
+                        <td class="{{ 'docip'+''.join([data[6]|string]) }}">{{ data[1] }}</td>
                     </tr>
                     {% endfor %}
                     <tr>
@@ -67,13 +67,13 @@
                     </tr>
                     {% for data in merge %}
                     <tr>
-                        <td>{{ data[0] }}</td>
-                        <td><a href="{{ ''.join(['http://', data[1]+':'+data[2]+data[3]]) }}">{{ data[3][1:] }}</a></td>
-                        <td>{{ data[4] }}</td>
-                        <td>{% if data[5]|int %} <p style="color: green; margin: 0px;">Online</p> {% else %} <p
+                        <td class="{{ 'mergename'+''.join([data[6]|string]) }}">{{ data[0] }}</td>
+                        <td class="{{ 'mergeurl'+''.join([data[6]|string]) }}" ><a href="{{ ''.join(['http://', data[1]+':'+data[2]+'/'+data[3]]) }}">{{ data[3] }}</a></td>
+                        <td class="{{ 'mergerev'+''.join([data[6]|string]) }}">{{ data[4] }}</td>
+                        <td class="{{ 'mergestatus'+''.join([data[6]|string]) }}">{% if data[5]|int %} <p style="color: green;">Online</p> {% else %} <p
                                 style="color: red;">Offline</p> {% endif %}
                         </td>
-                        <td>{{ data[1] }}</td>
+                        <td class="{{ 'mergeip'+''.join([data[6]|string]) }}">{{ data[1] }}</td>
                     </tr>
                     {% endfor %}
                 </table>
@@ -86,21 +86,21 @@
                         <caption><strong>Статус камер</strong></caption>
                         <tr>
                             {% for data in cam %}
-                            {%- if loop.index % 19==0 %}
-                            {% if data[1]|int %}
-                            <td bgcolor="green" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
-                            {% else %}
-                            <td bgcolor="red" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
-                            {% endif %}
-                        </tr>
-                        <tr>
-                            {% else %}
-                            {% if data[1]|int %}
-                            <td bgcolor="green" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
-                            {% else %}
-                            <td bgcolor="red" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
-                            {% endif %}
-                            {% endif %}
+                                {%- if loop.index % 19==0 %}
+                                    {% if data[1]|int %}
+                                        <td class="{{ 'cam'+''.join([data[2]|string]) }}" bgcolor="green" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                                    {% else %}
+                                        <td class="{{ 'cam'+''.join([data[2]|string]) }}" bgcolor="red" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                                    {% endif %}
+                            </tr>
+                            <tr>
+                                {% else %}
+                                    {% if data[1]|int %}
+                                        <td class="{{ 'cam'+''.join([data[2]|string]) }}" bgcolor="green" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                                    {% else %}
+                                        <td class="{{ 'cam'+''.join([data[2]|string]) }}" bgcolor="red" title="{{ ''.join([data[0]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                                    {% endif %}
+                                {% endif %}
                             {% endfor %}
                     </table>
                 </div>
@@ -130,18 +130,20 @@
                         <tr>
                             <td>{{ data[0] }}</td>
                             {% if data[2]|int %}
-                            <td bgcolor="green" title="{{ ''.join([data[1]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                                <td class="{{ 'res'+''.join([data[0]]) }}" bgcolor="green" title="{{ ''.join([data[1]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
                             {% else %}
-                            <td bgcolor="red" title="{{ ''.join([data[1]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
+                                <td class="{{ 'res'+''.join([data[0]]) }}" bgcolor="red" title="{{ ''.join([data[1]]) }}">&nbsp&nbsp&nbsp&nbsp</td>
                             {% endif %}
                         </tr>
                         {% endfor %}
                     </table>
                 </div>
+                <div id="here_table">
+
+                </div>
             </div>
         </div>
         <button id="js">Get JSON data</button>
-        <div id="divjs"></div>
     </div>
 </div>
 </body>

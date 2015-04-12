@@ -1,12 +1,13 @@
 from flask import Flask, render_template, redirect, jsonify
 import db
+import json
 import subprocess
 import sys
 import merger
 from os import system
 
 
-#subprocess.Popen([sys.executable, "db.py"])
+subprocess.Popen([sys.executable, "db.py"])
 system("title " + "testing.nordavind.ru")
 app = Flask(__name__, static_folder='', static_url_path='')
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
@@ -36,7 +37,7 @@ def index():
     c[0][1] = Статус камеры. True или False
     c[0][2] = primary key из БД
 
-    res = dtb.read_cam_status()
+    res = dtb.read_res_status()
     res = [('Redmine', 'redmine.nordavind.ru', True, 0), ...]
     res[0][0] = название ресурса
     res[0][1] = ip или url
@@ -51,6 +52,7 @@ def index():
     cam = dtb.read_cam()
     res = dtb.read_res()
     buttons = dtb.read_button()
+    print(cam)
     return render_template('index.html', test=test, build=build, doc=doc, merge=merge, cam=cam, res=res,
                            buttons=buttons)
 
@@ -73,10 +75,31 @@ def merge(action):
 
 @app.route('/js')
 def getjs():
-    res = dtb.read_res()
-    print(res)
-    return (jsonify(result=res))
-    #return redirect('/')
+    jsResStatus = {}
+    for data in dtb.read_res():
+        jsResStatus[data[0]] = data[2]
+    jsCamStatus = {}
+    for data in dtb.read_cam():
+        #{primary key=status}
+        jsCamStatus[data[2]] = data[1]
+    jsMergeStatus = {}
+    for data in dtb.read_merge():
+        jsMergeStatus[data[6]] = [data[0], data[1], data[2], data[3], data[4], data[5]]
+    jsDocStatus = {}
+    for data in dtb.read_doc():
+        jsDocStatus[data[6]] = [data[0], data[1], data[2], data[3], data[4], data[5]]
+    jsBuildStatus = {}
+    for data in dtb.read_build():
+        jsBuildStatus[data[6]] = [data[0], data[1], data[2], data[3], data[4], data[5]]
+    jsTestStatus = {}
+    for data in dtb.read_test():
+        jsTestStatus[data[6]] = [data[0], data[1], data[2], data[3], data[4], data[5]]
+    return jsonify(jsResStatus=jsResStatus,
+                   jsCamStatus=jsCamStatus,
+                   jsMergeStatus=jsMergeStatus,
+                   jsDocStatus=jsDocStatus,
+                   jsBuildStatus=jsBuildStatus,
+                   jsTestStatus=jsTestStatus)
 
 if __name__ == '__main__':
     app.run(debug=True)

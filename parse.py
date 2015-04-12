@@ -82,7 +82,7 @@ class Parser:
         ip_port = urlparse(url[1]).netloc
         ip = ip_port.split(':')[0]
         port = ip_port.split(':')[1]
-        name = urlparse(url[1]).path
+        name = urlparse(url[1]).path[1:]
         server_status = self.pinger(ip)
         try:
             page = requests.get(url[1], timeout=2)
