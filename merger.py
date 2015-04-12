@@ -67,6 +67,5 @@ class Merger(SvnClient):
 
 if __name__ == '__main__':
     branch = ''
-    #branch = 'https://redmine.nordavind.ru/svn/tvz-win-armo/branches/hasp'
     m = Merger()
     m.mergeGo(branch)
