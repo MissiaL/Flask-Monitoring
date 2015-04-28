@@ -36,7 +36,10 @@ class Database:
                                  RESULT TEXT NOT NULL,
                                  ID INT NOT NULL,
                                  PRIMARY KEY (ID) );''')
-
+        self.db.executescript('''CREATE TABLE IF NOT EXISTS testbranch
+                                (ID INTEGER PRIMARY KEY,
+                                 BRANCH TEXT NOT NULL,
+                                 DIR TEXT NOT NULL);''')
     def write_test(self, w):
         self.db.execute("DELETE FROM test")
         for key, test in enumerate(w):
@@ -118,7 +121,7 @@ def loop():
         dtb.write_cam(p.camerasCam())
         dtb.write_res(p.resourcesRes())
         dtb.write_button(p.buttons)
-        print('\nLOOP: ', dtb.read_button())
+        # print('\nLOOP: ', dtb.read_button())
         time.sleep(30)
 
 

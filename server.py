@@ -1,13 +1,13 @@
-from flask import Flask, render_template, redirect, jsonify
+from flask import Flask, render_template, redirect, jsonify, request
 import db
 import json
 import subprocess
 import sys
 import merger
 from os import system
+from testbranch import downloadSource
 
-
-subprocess.Popen([sys.executable, "db.py"])
+#subprocess.Popen([sys.executable, "db.py"])
 system("title " + "testing.nordavind.ru")
 app = Flask(__name__, static_folder='', static_url_path='')
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
@@ -52,7 +52,6 @@ def index():
     cam = dtb.read_cam()
     res = dtb.read_res()
     buttons = dtb.read_button()
-    print(cam)
     return render_template('index.html', test=test, build=build, doc=doc, merge=merge, cam=cam, res=res,
                            buttons=buttons)
 
@@ -72,6 +71,7 @@ def merge(action):
             return render_template('merge_result.html', out=out)
     else:
         return redirect('/')
+
 
 @app.route('/js')
 def getjs():
@@ -100,6 +100,18 @@ def getjs():
                    jsDocStatus=jsDocStatus,
                    jsBuildStatus=jsBuildStatus,
                    jsTestStatus=jsTestStatus)
+
+@app.route('/branch')
+def branch():
+    return render_template('branch.html')
+
+
+@app.route('/jsbranch', methods=['POST'])
+def jsbranch():
+    sourceApp, sourceTesting=request.get_json()
+    print([sourceApp, sourceTesting])
+    downloadSource([sourceApp, sourceTesting])
+    return redirect('/branch')
 
 if __name__ == '__main__':
     app.run(debug=True)
