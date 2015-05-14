@@ -1,6 +1,8 @@
-from merger import SvnClient
 import tempfile
 import sqlite3
+
+from scripts.merger import SvnClient
+
 
 svn = SvnClient()
 

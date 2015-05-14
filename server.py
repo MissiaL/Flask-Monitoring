@@ -1,18 +1,27 @@
-from flask import Flask, render_template, redirect, jsonify, request
-import db
-import json
-import subprocess
+import time
+import itertools
+import os
 import sys
-import merger
-from os import system
-from testbranch import downloadSource
+import subprocess
 
-#subprocess.Popen([sys.executable, "db.py"])
-system("title " + "testing.nordavind.ru")
-app = Flask(__name__, static_folder='', static_url_path='')
+from flask import Flask, render_template, redirect, jsonify, request, Response, url_for
+from config_monitoring import host, port, title, database
+
+from scripts import db
+# from scripts import merger
+# from scripts.testbranch import downloadSource
+
+if sys.platform == 'win32':
+    os.system(title)
+
+#subprocess.Popen([sys.executable, 'scripts/db.py'])
+
+app = Flask(__name__)
+app.config.from_object('config_monitoring')
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
-dtb = db.Database('server')
-svn = merger.Merger()
+
+dtb = db.Database(database)
+# svn = merger.Merger()
 
 
 @app.route("/")
@@ -101,6 +110,7 @@ def getjs():
                    jsBuildStatus=jsBuildStatus,
                    jsTestStatus=jsTestStatus)
 
+
 @app.route('/branch')
 def branch():
     return render_template('branch.html')
@@ -108,10 +118,22 @@ def branch():
 
 @app.route('/jsbranch', methods=['POST'])
 def jsbranch():
-    sourceApp, sourceTesting=request.get_json()
+    sourceApp, sourceTesting = request.get_json()
     print([sourceApp, sourceTesting])
-    downloadSource([sourceApp, sourceTesting])
+    #downloadSource([sourceApp, sourceTesting])
     return redirect('/branch')
 
+
+@app.route('/mergeout')
+def mergeout():
+    if request.headers.get('accept') == 'text/event-stream':
+        def events():
+            for i, c in enumerate(itertools.cycle('\|/-')):
+                yield "data: %s %d\n\n" % (c, i)
+                time.sleep(.1)  # an artificial delay
+        return Response(events(), content_type='text/event-stream')
+    return redirect(url_for('static', filename='mergeout.html'))
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host=host, port=port)

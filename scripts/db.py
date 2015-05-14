@@ -1,8 +1,9 @@
 import sqlite3
-from parse import Parser
 import time
 import configparser
 
+from scripts.parse import Parser
+from config_monitoring import database
 
 class Database:
     def __init__(self, name):
@@ -112,7 +113,7 @@ class Database:
 
 def loop():
     while True:
-        dtb = Database('server')
+        dtb = Database(database)
         p = Parser()
         dtb.write_test(p.testingTest())
         dtb.write_build(p.testingBuild())

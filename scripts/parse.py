@@ -1,14 +1,13 @@
-import ping
-from urllib import request
 from urllib.parse import urlparse
-from urllib.error import URLError
-from lxml import etree
 from multiprocessing.dummy import Pool as ThreadPool
 import configparser
-import socket
+
+from lxml import etree
 import requests
 from lxml import html
 import lxml
+
+from scripts import ping
 
 
 class Parser:
