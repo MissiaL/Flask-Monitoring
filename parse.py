@@ -78,21 +78,24 @@ class Parser:
         server_status = Пингуем сервер по ip и получаем ответ True или False
         """
         url_name = url[0]
-        ip_port = urlparse(url[1]).netloc
-        ip = ip_port.split(':')[0]
-        port = ip_port.split(':')[1]
-        name = urlparse(url[1]).path[1:]
+        try:
+            ip_port = urlparse(url[1]).netloc
+            ip = ip_port.split(':')[0]
+            port = ip_port.split(':')[1]
+        except:
+            ip = 'Uknown'
+            port = 'Uknown'
+        try:
+            name = urlparse(url[1]).path[1:]
+        except:
+            name = 'Uknown'
         server_status = self.pinger(ip)
         try:
             page = requests.get(url[1], timeout=2)
             tree = html.fromstring(page.text)
             rev = max(tree.xpath('//td[@class="context-menu-revision"]/@rev'))
-        except (requests.ConnectionError, lxml.etree.XMLSyntaxError):
+        except (requests.ConnectionError, lxml.etree.XMLSyntaxError, ValueError, requests.RequestException):
             rev = 'Uknown'
-        except ValueError:
-            rev = 'Uknown'
-            ip = 'Uknown'
-            port = 'Uknown'
         return [url_name, ip, port, name, rev, server_status]
 
     def testingTest(self):
@@ -139,9 +142,9 @@ class Parser:
 
 if __name__ == '__main__':
     p = Parser()
-    print(p.testingTest())
-    print(p.testingBuild())
+    # print(p.testingTest())
+    # print(p.testingBuild())
     print(p.testingDoc())
     print(p.testingMerge())
-    print(p.camerasCam())
-    print(p.resourcesRes())
+    # print(p.camerasCam())
+    # print(p.resourcesRes())
