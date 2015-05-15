@@ -2,12 +2,12 @@ import time
 import itertools
 import os
 import sys
-import subprocess
 
-from flask import Flask, render_template, redirect, jsonify, request, Response, url_for
+from flask import Flask, render_template, redirect, jsonify, request, Response, url_for, abort
+
 from config_monitoring import host, port, title, database
+import db
 
-from scripts import db
 # from scripts import merger
 # from scripts.testbranch import downloadSource
 
@@ -71,13 +71,15 @@ def index_merge():
     return render_template('merge_template.html', buttons=buttons)
 
 
-@app.route('/<action>', methods=['POST'])
-def merge(action):
-    buttons = dtb.read_button()
-    for data in buttons:
-        if action == data[0]:
-            out = svn.mergeGo(data[1])
-            return render_template('merge_result.html', out=out)
+@app.route('/buttons', methods=['POST'])
+def merge():
+    buttons = [i[0] for i in dtb.read_button()]
+    input_name = [key for key in dict(request.form).keys()]
+    input_name = input_name[0]
+    if input_name in buttons:
+        # out = svn.mergeGo(input_name)
+        out = 'svn'
+        return render_template('merge_result.html', out=out)
     else:
         return redirect('/')
 
@@ -134,6 +136,13 @@ def mergeout():
         return Response(events(), content_type='text/event-stream')
     return redirect(url_for('static', filename='mergeout.html'))
 
+# @app.route('/login')
+# def login():
+#     abort(404)
+#
+# @app.errorhandler(404)
+# def page_not_found(error):
+#     return render_template('branch.html'), 404
 
 if __name__ == '__main__':
     app.run(host=host, port=port)

@@ -2,8 +2,9 @@ import sqlite3
 import time
 import configparser
 
-from scripts.parse import Parser
+from parse import Parser
 from config_monitoring import database
+
 
 class Database:
     def __init__(self, name):

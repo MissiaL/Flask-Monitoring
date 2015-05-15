@@ -7,7 +7,7 @@ import requests
 from lxml import html
 import lxml
 
-from scripts import ping
+import ping
 
 
 class Parser:

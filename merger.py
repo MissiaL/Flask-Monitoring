@@ -4,17 +4,18 @@
 import os
 from shutil import rmtree
 import time
-from urllib.parse import urlparse
 import subprocess as sp
 from subprocess import PIPE
 import tempfile
 import pysvn
 
+from urllib.parse import urlparse
+from config_monitoring import svn_login, svn_password
 
 class SvnClient:
     def __init__(self):
-        self.login = ''
-        self.password = ''
+        self.login = svn_login
+        self.password = svn_password
         self.timeout = 300
 
     def connect(self):
